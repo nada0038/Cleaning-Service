@@ -1,0 +1,47 @@
+.toggleBtn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-spring);
+  position: relative;
+}
+
+.toggleBtn:hover {
+  transform: scale(1.05);
+  border-color: var(--text-muted);
+  box-shadow: var(--shadow-md);
+}
+
+.toggleBtn:active {
+  transform: scale(0.95);
+}
+
+.iconContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  gap: 20px;
+  transform: translateY(19px); /* Sun active position */
+}
+
+.iconContainer.isDark {
+  transform: translateY(-19px); /* Moon active position */
+}
+
+.sunIcon {
+  color: var(--accent);
+}
+
+.moonIcon {
+  color: hsl(210, 80%, 70%);
+}

@@ -1,0 +1,123 @@
+.aboutSection {
+  background-color: var(--surface);
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+@media (max-width: 968px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}
+
+.storyCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  color: var(--text-main);
+}
+
+.introParagraph {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.bodyParagraph {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.metricCard {
+  background-color: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.metricValue {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.metricLabel {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Pillars list on right */
+.valuesCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.valueCard {
+  background: var(--glass-bg);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+
+.valueHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.valueHeader h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.valueIconContainer {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: var(--primary-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.valueIcon {
+  color: var(--primary);
+}
+
+.valueCard p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}

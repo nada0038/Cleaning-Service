@@ -1,0 +1,52 @@
+.gallerySection {
+  background-color: var(--surface);
+  position: relative;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.tabBtn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none; /* prevent link-style colors */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabBtn:hover {
+  border-color: var(--text-main);
+  color: var(--text-main);
+  background-color: var(--surface-hover);
+}
+
+.activeTabBtn {
+  background-color: var(--primary);
+  color: var(--text-inverse) !important;
+  border-color: var(--primary);
+}
+
+.activeTabBtn:hover {
+  background-color: var(--primary-hover);
+  color: var(--text-inverse) !important;
+}
+
+.sliderPresenter {
+  animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}

@@ -1,0 +1,98 @@
+.skeletonItem {
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    var(--surface-hover) 50%,
+    var(--border) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.line {
+  height: 14px;
+  margin-bottom: 12px;
+}
+
+.rect {
+  height: 180px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+}
+
+.circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.w40 { width: 40%; }
+.w60 { width: 60%; }
+.w80 { width: 80%; }
+.w100 { width: 100%; }
+
+/* Grid Layouts */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.skeletonCard {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.rowContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.skeletonRow {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.rowLines {
+  flex-grow: 1;
+}
+
+/* Dashboard Skeleton */
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.gridHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.75rem;
+}
+
+.dashboardRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}

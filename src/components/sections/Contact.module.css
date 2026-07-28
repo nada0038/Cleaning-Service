@@ -1,0 +1,158 @@
+.contactSection {
+  background-color: var(--surface);
+  position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 968px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.infoDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.infoItem h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.15rem;
+}
+
+.infoItem p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* WhatsApp Block */
+.whatsappBox {
+  background-color: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.whatsappBox p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.whatsappBtn {
+  background-color: #25D366; /* Official WhatsApp green */
+  color: white;
+  font-size: 0.85rem;
+  padding: 0.6rem 1.25rem;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.25);
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  width: auto;
+}
+
+.whatsappBtn:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+}
+
+/* Map frame container */
+.mapContainer {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Form block */
+.formCol {
+  width: 100%;
+}
+
+.formCard {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 2.5rem;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  color: var(--text-main);
+}
+
+.formDesc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.successMessage {
+  background-color: hsla(142, 70%, 45%, 0.1);
+  border: 1px solid hsl(142, 70%, 45%);
+  color: hsl(142, 70%, 30%);
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.errorMessage {
+  background-color: hsla(0, 84%, 60%, 0.1);
+  border: 1px solid hsl(0, 84%, 60%);
+  color: hsl(0, 84%, 40%);
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}

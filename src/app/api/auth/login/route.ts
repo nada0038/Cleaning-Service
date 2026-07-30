@@ -75,10 +75,16 @@ export async function POST(req: Request) {
     });
 
     return response;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Login error:', error);
+    const isDbUninitialized = error?.code === 'P2021' || error?.message?.includes('does not exist');
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
+      { 
+        success: false, 
+        error: isDbUninitialized 
+          ? 'Database tables not initialized. Please run database migrations.' 
+          : 'Internal server error' 
+      },
       { status: 500 }
     );
   }

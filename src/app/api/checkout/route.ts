@@ -60,7 +60,17 @@ export async function POST(req: Request) {
     // Check if Stripe is configured
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
-    if (paymentMethod === 'STRIPE' && stripeSecretKey) {
+    if (paymentMethod === 'STRIPE') {
+      if (!stripeSecretKey) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Stripe Payment Gateway is not configured yet. Please add STRIPE_SECRET_KEY to your Vercel Environment Variables.',
+          },
+          { status: 400 }
+        );
+      }
+
       const stripe = new Stripe(stripeSecretKey);
       const appProtocol = req.headers.get('x-forwarded-proto') || 'http';
       const appHost = req.headers.get('host') || 'localhost:3000';

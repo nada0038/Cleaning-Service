@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { 
   Calendar, Clock, DollarSign, Users, CheckCircle, XCircle, 
   Trash2, Sparkles, LogOut, Check, X, Mail, Star, 
-  Plus, Edit, ClipboardList, Settings, MessageSquare, AlertCircle
+  Plus, Edit, ClipboardList, Settings, MessageSquare, AlertCircle,
+  KeyRound, UserCheck
 } from 'lucide-react';
 import Loader from '@/components/ui/Loader';
 import styles from './Dashboard.module.css';
@@ -56,7 +57,18 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [admin, setAdmin] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'bookings' | 'services' | 'testimonials' | 'messages'>('bookings');
+  const [activeTab, setActiveTab] = useState<'bookings' | 'services' | 'testimonials' | 'messages' | 'settings'>('bookings');
+
+  // Account Settings Form State
+  const [profileForm, setProfileForm] = useState({
+    currentPassword: '',
+    newName: '',
+    newEmail: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [profileStatus, setProfileStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
   // Core Database States
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -289,6 +301,55 @@ export default function AdminDashboard() {
     return <Loader fullScreen />;
   }
 
+  // 6. Admin Credentials Update Handler
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setProfileStatus(null);
+
+    if (!profileForm.currentPassword) {
+      setProfileStatus({ type: 'error', message: 'Current password is required to verify identity.' });
+      return;
+    }
+
+    if (profileForm.newPassword && profileForm.newPassword !== profileForm.confirmPassword) {
+      setProfileStatus({ type: 'error', message: 'New password and confirmation do not match.' });
+      return;
+    }
+
+    setIsUpdatingProfile(true);
+    try {
+      const res = await fetch('/api/admin/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword: profileForm.currentPassword,
+          newName: profileForm.newName || undefined,
+          newEmail: profileForm.newEmail || undefined,
+          newPassword: profileForm.newPassword || undefined,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setAdmin(data.user);
+        setProfileStatus({ type: 'success', message: 'Admin credentials updated successfully!' });
+        setProfileForm({
+          currentPassword: '',
+          newName: '',
+          newEmail: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      } else {
+        setProfileStatus({ type: 'error', message: data.error || 'Failed to update credentials.' });
+      }
+    } catch (err) {
+      setProfileStatus({ type: 'error', message: 'Network error updating profile credentials.' });
+    } finally {
+      setIsUpdatingProfile(false);
+    }
+  };
+
   return (
     <div className={styles.dashboardLayout}>
       {/* Sidebar navigation */}
@@ -321,6 +382,12 @@ export default function AdminDashboard() {
             className={`${styles.navItem} ${activeTab === 'messages' ? styles.activeItem : ''}`}
           >
             <Mail size={18} /> Client Messages ({messages.filter(m => !m.read).length} new)
+          </button>
+          <button
+            onClick={() => setActiveTab('settings')}
+            className={`${styles.navItem} ${activeTab === 'settings' ? styles.activeItem : ''}`}
+          >
+            <KeyRound size={18} /> Credentials & Password
           </button>
         </nav>
         
@@ -781,6 +848,102 @@ export default function AdminDashboard() {
                   )}
                 </tbody>
               </table>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 5: Account Credentials Settings */}
+        {activeTab === 'settings' && (
+          <section className={styles.tableSection}>
+            <div className={styles.tableHeader}>
+              <div>
+                <h2>Account Credentials & Security</h2>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                  Update your admin profile name, login email address, or security password.
+                </p>
+              </div>
+            </div>
+
+            {profileStatus && (
+              <div className={profileStatus.type === 'success' ? styles.successAlert : styles.errorAlert}>
+                {profileStatus.type === 'success' ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
+                <span>{profileStatus.message}</span>
+                <button onClick={() => setProfileStatus(null)} className={styles.closeAlertBtn}>&times;</button>
+              </div>
+            )}
+
+            <div style={{ maxWidth: '600px', backgroundColor: 'var(--surface)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border)' }}>
+              <form onSubmit={handleUpdateProfile}>
+                <div className="input-group">
+                  <label className="input-label">Current Admin Name</label>
+                  <input
+                    type="text"
+                    value={profileForm.newName}
+                    onChange={(e) => setProfileForm({ ...profileForm, newName: e.target.value })}
+                    placeholder={admin?.name || 'Enter new display name'}
+                    className="input-field"
+                  />
+                </div>
+
+                <div className="input-group">
+                  <label className="input-label">Admin Email Address</label>
+                  <input
+                    type="email"
+                    value={profileForm.newEmail}
+                    onChange={(e) => setProfileForm({ ...profileForm, newEmail: e.target.value })}
+                    placeholder={admin?.email || 'Enter new login email'}
+                    className="input-field"
+                  />
+                </div>
+
+                <hr style={{ margin: '1.5rem 0', borderColor: 'var(--border)', opacity: 0.5 }} />
+
+                <div className="input-group">
+                  <label className="input-label">New Password (Optional)</label>
+                  <input
+                    type="password"
+                    value={profileForm.newPassword}
+                    onChange={(e) => setProfileForm({ ...profileForm, newPassword: e.target.value })}
+                    placeholder="Leave blank to keep current password"
+                    className="input-field"
+                    minLength={6}
+                  />
+                </div>
+
+                {profileForm.newPassword && (
+                  <div className="input-group">
+                    <label className="input-label">Confirm New Password</label>
+                    <input
+                      type="password"
+                      value={profileForm.confirmPassword}
+                      onChange={(e) => setProfileForm({ ...profileForm, confirmPassword: e.target.value })}
+                      placeholder="Re-enter new password"
+                      className="input-field"
+                    />
+                  </div>
+                )}
+
+                <div className="input-group" style={{ marginTop: '1.5rem', backgroundColor: 'var(--surface-hover)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                  <label className="input-label" style={{ color: 'var(--text-main)' }}>Current Password (Required to Save Changes)</label>
+                  <input
+                    type="password"
+                    value={profileForm.currentPassword}
+                    onChange={(e) => setProfileForm({ ...profileForm, currentPassword: e.target.value })}
+                    placeholder="Enter current password to authorize update"
+                    className="input-field"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isUpdatingProfile}
+                  className="btn btn-primary"
+                  style={{ width: '100%', marginTop: '1.5rem' }}
+                >
+                  {isUpdatingProfile ? 'Updating Credentials...' : 'Save Updated Credentials'}
+                </button>
+              </form>
             </div>
           </section>
         )}

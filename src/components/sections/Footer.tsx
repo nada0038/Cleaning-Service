@@ -44,7 +44,6 @@ export default function Footer() {
           <h4>{t(lang, 'footer_portal_title')}</h4>
           <ul className={styles.linksList}>
             <li><a href="#booking">{t(lang, 'footer_portal_book')}</a></li>
-            <li><a href="/signup">Create User Account</a></li>
             <li><a href="/admin/login">{t(lang, 'footer_portal_admin')}</a></li>
             <li><a href="#contact">{t(lang, 'footer_portal_contact')}</a></li>
             <li><a href="#privacy">{t(lang, 'footer_portal_privacy')}</a></li>

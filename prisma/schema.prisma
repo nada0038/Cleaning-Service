@@ -29,19 +29,22 @@ model Service {
 }
 
 model Booking {
-  id            String   @id @default(uuid())
-  customerName  String
-  customerEmail String
-  customerPhone String
-  serviceId     String
-  service       Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  date          String
-  time          String
-  notes         String?
-  status        String   @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
-  totalCost     Float
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(uuid())
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  serviceId       String
+  service         Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  date            String
+  time            String
+  notes           String?
+  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
+  paymentMethod   String   @default("CASH")    // STRIPE, CASH
+  paymentStatus   String   @default("UNPAID")  // UNPAID, PAID
+  stripeSessionId String?
+  totalCost       Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Testimonial {

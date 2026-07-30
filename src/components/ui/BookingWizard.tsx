@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ChevronRight, ChevronLeft, CreditCard } from 'lucide-react';
 import styles from './BookingWizard.module.css';
 
 interface Service {
@@ -27,6 +27,7 @@ export default function BookingWizard() {
     customerEmail: '',
     customerPhone: '',
     notes: '',
+    paymentMethod: 'STRIPE',
   });
 
   const [bookingResult, setBookingResult] = useState<any>(null);
@@ -99,7 +100,7 @@ export default function BookingWizard() {
     setError('');
 
     try {
-      const res = await fetch('/api/bookings', {
+      const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -107,8 +108,13 @@ export default function BookingWizard() {
 
       const data = await res.json();
       if (data.success) {
-        setBookingResult(data.booking);
-        setStep(5); // Success step
+        if (data.url) {
+          // Redirect to Stripe Checkout page
+          window.location.href = data.url;
+        } else {
+          setBookingResult(data.booking);
+          setStep(5); // Success step
+        }
       } else {
         setError(data.error || 'Something went wrong. Please check inputs.');
       }
@@ -129,6 +135,7 @@ export default function BookingWizard() {
       customerEmail: '',
       customerPhone: '',
       notes: '',
+      paymentMethod: 'STRIPE',
     });
     setBookingResult(null);
   };
@@ -344,6 +351,44 @@ export default function BookingWizard() {
                   <span className={styles.reviewValue}>{formData.notes}</span>
                 </div>
               )}
+              <div className={styles.divider}></div>
+
+              {/* Payment Method Selector */}
+              <div style={{ marginTop: '1.25rem' }}>
+                <label className={styles.label} style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+                  <CreditCard size={16} /> Choose Payment Option
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.85rem 1rem', borderRadius: '10px', border: `1.5px solid ${formData.paymentMethod === 'STRIPE' ? 'var(--primary)' : 'var(--border)'}`, backgroundColor: formData.paymentMethod === 'STRIPE' ? 'var(--surface-hover)' : 'transparent', cursor: 'pointer', transition: 'var(--transition-smooth)' }}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="STRIPE"
+                      checked={formData.paymentMethod === 'STRIPE'}
+                      onChange={handleChange}
+                    />
+                    <div>
+                      <strong style={{ display: 'block', fontSize: '0.88rem', color: 'var(--text-main)' }}>Pay Online (Stripe)</strong>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cards, Apple / Google Pay</span>
+                    </div>
+                  </label>
+
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.85rem 1rem', borderRadius: '10px', border: `1.5px solid ${formData.paymentMethod === 'CASH' ? 'var(--primary)' : 'var(--border)'}`, backgroundColor: formData.paymentMethod === 'CASH' ? 'var(--surface-hover)' : 'transparent', cursor: 'pointer', transition: 'var(--transition-smooth)' }}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="CASH"
+                      checked={formData.paymentMethod === 'CASH'}
+                      onChange={handleChange}
+                    />
+                    <div>
+                      <strong style={{ display: 'block', fontSize: '0.88rem', color: 'var(--text-main)' }}>Pay In-Person</strong>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cash or Card on service day</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
               <div className={styles.divider}></div>
               <div className={styles.priceSummary}>
                 <span>Total Base Price</span>

@@ -15,11 +15,11 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { customerName, customerEmail, customerPhone, serviceId, date, time, notes, paymentMethod } = body;
+    const { customerName, customerEmail, customerPhone, address, serviceId, date, time, notes, paymentMethod } = body;
 
-    if (!customerName || !customerEmail || !customerPhone || !serviceId || !date || !time) {
+    if (!customerName || !customerEmail || !customerPhone || !address || !serviceId || !date || !time) {
       return NextResponse.json(
-        { success: false, error: 'Missing required booking details' },
+        { success: false, error: 'Missing required booking details (including service address)' },
         { status: 400 }
       );
     }
@@ -42,6 +42,7 @@ export async function POST(req: Request) {
         customerName: customerName.trim(),
         customerEmail: customerEmail.trim().toLowerCase(),
         customerPhone: customerPhone.trim(),
+        address: address.trim(),
         serviceId,
         date,
         time,

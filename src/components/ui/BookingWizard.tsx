@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ChevronRight, ChevronLeft, CreditCard } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ChevronRight, ChevronLeft, CreditCard, MapPin } from 'lucide-react';
 import styles from './BookingWizard.module.css';
 
 interface Service {
@@ -26,6 +26,7 @@ export default function BookingWizard() {
     customerName: '',
     customerEmail: '',
     customerPhone: '',
+    address: '',
     notes: '',
     paymentMethod: 'STRIPE',
   });
@@ -134,6 +135,7 @@ export default function BookingWizard() {
       customerName: '',
       customerEmail: '',
       customerPhone: '',
+      address: '',
       notes: '',
       paymentMethod: 'STRIPE',
     });
@@ -311,6 +313,21 @@ export default function BookingWizard() {
 
               <div className={styles.formGroup}>
                 <label className={styles.label}>
+                  <MapPin size={16} /> Service Site Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="e.g. 100 Luxury Way, Apt 4B, Beverly Hills, CA 90210"
+                  value={formData.address}
+                  onChange={handleChange}
+                  className={styles.textInput}
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>
                   <FileText size={16} /> Special Instructions (Optional)
                 </label>
                 <textarea
@@ -344,6 +361,10 @@ export default function BookingWizard() {
               <div className={styles.reviewRow}>
                 <span className={styles.reviewLabel}>Customer Info</span>
                 <span className={styles.reviewValue}>{formData.customerName} ({formData.customerPhone})</span>
+              </div>
+              <div className={styles.reviewRow}>
+                <span className={styles.reviewLabel}>Service Address</span>
+                <span className={styles.reviewValue}>{formData.address}</span>
               </div>
               {formData.notes && (
                 <div className={styles.reviewRow}>
@@ -443,7 +464,7 @@ export default function BookingWizard() {
                 disabled={
                   (step === 1 && !formData.serviceId) ||
                   (step === 2 && (!formData.date || !formData.time)) ||
-                  (step === 3 && (!formData.customerName || !formData.customerEmail || !formData.customerPhone))
+                  (step === 3 && (!formData.customerName || !formData.customerEmail || !formData.customerPhone || !formData.address))
                 }
                 className="btn btn-primary"
               >

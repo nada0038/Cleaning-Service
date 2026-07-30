@@ -16,12 +16,15 @@ interface Booking {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
+  address?: string;
   serviceId: string;
   service: { name: string; basePrice: number };
   date: string;
   time: string;
   notes: string | null;
   status: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
   totalCost: number;
 }
 
@@ -479,6 +482,9 @@ export default function AdminDashboard() {
                       <td>
                         <div className={styles.boldName}>{booking.customerName}</div>
                         <div className={styles.subDetail}>{booking.customerEmail} | {booking.customerPhone}</div>
+                        {booking.address && (
+                          <div className={styles.subDetail} style={{ color: 'var(--primary)', fontWeight: 600 }}>📍 {booking.address}</div>
+                        )}
                         {booking.notes && (
                           <div className={styles.noteSnippet}>📝 {booking.notes}</div>
                         )}

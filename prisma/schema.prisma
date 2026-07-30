@@ -33,13 +33,14 @@ model Booking {
   customerName    String
   customerEmail   String
   customerPhone   String
+  address         String   @default("Beverly Hills, CA")
   serviceId       String
   service         Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   date            String
   time            String
   notes           String?
   status          String   @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED
-  paymentMethod   String   @default("CASH")    // STRIPE, CASH
+  paymentMethod   String   @default("STRIPE")  // STRIPE, CASH
   paymentStatus   String   @default("UNPAID")  // UNPAID, PAID
   stripeSessionId String?
   totalCost       Float
